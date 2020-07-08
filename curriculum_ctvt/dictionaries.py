@@ -1,6 +1,6 @@
 from pedal.core.commands import gently, explain
 from pedal.cait.cait_api import *
-from CS1014.mistakes.instructor_append import app_assign
+from curriculum_ctvt.instructor_append import app_assign
 
 
 # dict_acc_group

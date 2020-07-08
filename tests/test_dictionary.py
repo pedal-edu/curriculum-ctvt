@@ -4,13 +4,13 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 from tests.mistake_test_template import *
-from CS1014.dictionaries import *
-from CS1014.input_mistakes import *
-from CS1014.mistakes.iteration_context import all_labels_present
+from curriculum_ctvt.dictionaries import *
+from curriculum_ctvt.input_mistakes import *
+from curriculum_ctvt.iteration_context import all_labels_present
 from pedal.resolvers import simple
+from pedal.assertions.static import prevent_literal
 # import pedal.sandbox.compatibility as compatibility
 # from tests.execution_helper import Execution
-from pedal.toolkit.utilities import *
 
 
 class DictionaryMistakeTest(MistakeTest):
@@ -1218,7 +1218,7 @@ class DictionaryMistakeTest(MistakeTest):
                        '{"Location": "China", "Magnitude": 4.3, "Depth": 10.0}]')
         matches = find_matches(target_dict)
         if not matches:
-            explain_r("You need to properly define a dictionary for the abstraction first", "dict_def_err",
+            explain("You need to properly define a dictionary for the abstraction first", "dict_def_err",
                       label="Dictionary Definition Incorrect")
 
         all_keys = ["Location", "Magnitude", "Depth"]

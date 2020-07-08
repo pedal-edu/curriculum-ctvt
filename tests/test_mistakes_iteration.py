@@ -4,8 +4,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from tests.mistake_test_template import *
-from CS1014.mistakes.instructor_iteration import *
-from pedal.core.report import MAIN_REPORT
+from curriculum_ctvt.instructor_iteration import *
 
 class IterationMistakes(MistakeTest):
     def test_wrong_target_is_list(self):
