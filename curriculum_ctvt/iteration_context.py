@@ -718,16 +718,19 @@ def iterator_is_function():
     message = "You should make a variable for the list instead of using a function call for the list"
     code = "iter_is_func"
     tldr = "Using Function Call instead of List"
+    '''
+    matches = find_matches("for ___ in _func_():\n    pass")
+    matches += find_matches("for ___ in _var_._func_():\n    pass")
+    if matches:
+        return explain(message, label=code, title=tldr)
+    return False
+    '''
     std_ast = parse_program()
-    for_loops = std_ast.find_all('For')
+    func_calls = std_ast.find_all('Call')
     # noinspection PyBroadException
-    try:
-        for loop in for_loops:
-            list_prop = loop.iter
-            if list_prop.ast_name == 'Call':
-                return explain(message, label=code, title=tldr)
-    except Exception:
-        return False
+    for func_call in func_calls:
+        if func_call.field == "iter":
+            return explain(message, label=code, title=tldr)
     return False
 
 

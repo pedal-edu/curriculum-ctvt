@@ -559,6 +559,21 @@ class SpecificMistakeTest(MistakeTest):
         self.to_source('rainfall_list = weather.get("Precipitation","Location","Blacksburg, PA")')
         self.assertTrue(wrong_accumulator_initialization_9_1(), "false negative")
 
+    def test_wrong_accumulator_initialization_placement_9_1(self):
+        self.to_source("rainfall_sum = ___\n"
+                       "for _item_ in _list_:\n"
+                       "    pass")
+        self.assertFalse(wrong_accumulator_initialization_placement_9_1(), "false positive")
+
+        self.to_source("for _item_ in _list_:\n"
+                       "    pass\n"
+                       "rainfall_sum = ___\n")
+        self.assertTrue(wrong_accumulator_initialization_placement_9_1(), "false negative")
+
+        self.to_source("for _item_ in _list_:\n"
+                       "    rainfall_sum = ___\n")
+        self.assertTrue(wrong_accumulator_initialization_placement_9_1(), "false negative")
+
     def test_wrong_accumulation_9_1(self):
         self.to_source("rainfall_sum = _item_ + rainfall")
         self.assertTrue(wrong_accumulation_9_1(), "false negative")
@@ -994,3 +1009,16 @@ class SpecificMistakeTest(MistakeTest):
 
         self.to_source("plt.show()")
         self.assertFalse(show_parens(), "false positive")
+
+    def test_iterator_is_function(self):
+        self.to_source("for item in function_call():\n    pass")
+        self.assertTrue(iterator_is_function(), "False Negative")
+
+        self.to_source("for item in plt.call():\n    pass")
+        self.assertTrue(iterator_is_function(), "False Negative")
+
+        self.to_source("for item in plt.plt2.call():\n    pass")
+        self.assertTrue(iterator_is_function(), "False Negative")
+
+        self.to_source("for item in my_list:\n    pass")
+        self.assertFalse(iterator_is_function(), "false positive")
