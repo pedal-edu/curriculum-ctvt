@@ -54,7 +54,7 @@ def wrong_list_is_constant_8_2():
     matches = find_matches("shopping_cart = __expr__")
     for match in matches:
         __expr__ = match["__expr__"]
-        if __expr__.ast_name == "Num":
+        if __expr__.ast_name == "Constant":
             return explain(message, label=code, title=tldr)
     return False
 
@@ -72,10 +72,10 @@ def list_all_zeros_8_2():
     for match in matches:
         __list__ = match['__list__']
         list_node = __list__.parent
-        all_num = list_node.find_all("Num")
+        all_num = list_node.find_all("Constant")
         all_zeros = True
         for num in all_num:
-            if num.n != 0:
+            if num.value != 0:
                 all_zeros = False
                 break
         if all_zeros:
@@ -1427,6 +1427,6 @@ def hard_code_8_5():  # TODO: This one's weird
     if match:
         for m in match:
             __num__ = m["__num__"]
-            if len(__num__.find_all("Num")) > 0:
+            if len(__num__.find_all("Constant")) > 0:
                 return explain(message, label=code, title=tldr)
     return False
