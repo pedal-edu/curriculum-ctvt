@@ -987,3 +987,10 @@ class SpecificMistakeTest(MistakeTest):
 
         self.to_source("print(item)")
         self.assertFalse(hard_code_8_5(), "false positive")
+
+    def test_show_parens(self):
+        self.to_source("plt.show")
+        self.assertTrue(show_parens(), "false negative")
+
+        self.to_source("plt.show()")
+        self.assertFalse(show_parens(), "false positive")

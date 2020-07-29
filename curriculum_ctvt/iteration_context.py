@@ -1409,7 +1409,10 @@ def show_parens():
     message = "Make sure you add parenthesis to <code>plt.show</code>"
     code = "show_parens"
     tldr = "Incorrect Show"
-    if not find_match("plt.show"):
+    match = find_match("plt.show")
+    match2 = find_match("plt.show()")
+
+    if match and not match2:
         return gently(message, label=code, title=tldr)
     return False
 
