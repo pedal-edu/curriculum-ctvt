@@ -9,7 +9,6 @@ from curriculum_ctvt.input_mistakes import *
 from curriculum_ctvt.iteration_context import all_labels_present
 from pedal.resolvers import simple
 from pedal.assertions.static import prevent_literal
-# import pedal.sandbox.compatibility as compatibility
 # from tests.execution_helper import Execution
 
 

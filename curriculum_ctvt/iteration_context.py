@@ -1,7 +1,8 @@
 from pedal.cait.cait_api import (parse_program,
                                  find_matches, find_match,
                                  find_expr_sub_matches)
-from pedal.sandbox.compatibility import get_output, get_plots
+from pedal.sandbox.commands import get_output
+from pedal.extensions.plotting import  get_plots
 from pedal.core.commands import gently, explain
 
 

@@ -89,7 +89,7 @@ def wrong_not_append_to_list():
         submatches = __expr__.find_matches("_target_.append(___)")
         for submatch in submatches:
             _target_ = submatch["_target_"]
-            if not data_state(_target_).was_type('list'):
+            if not _target_.was_type('list'):
                 return explain(message.format(_target_), label=code, title=tldr)
     return False
 
@@ -159,7 +159,7 @@ def append_list_wrong_slot():
         for match in matches:
             _item_ = match["_item_"].astNode
             _target_ = match["_target_"].astNode
-            if data_state(_item_).was_type('list'):
+            if _item_.was_type('list'):
                 return explain(message.format(_item_.id, _target_.id), label=code, title=tldr)
     return False
 

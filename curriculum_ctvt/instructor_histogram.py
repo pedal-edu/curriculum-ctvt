@@ -1,6 +1,5 @@
 from pedal.cait.cait_api import find_match, find_matches, data_state
 from pedal.core.commands import gently, explain
-from pedal.core.feedback import AtomicFeedbackFunction
 
 
 def histogram_group():
@@ -73,8 +72,8 @@ def histogram_argument_not_list():
     matches = find_matches("plt.hist(_argument_)")
     if matches:
         for match in matches:
-            _argument_ = match["_argument_"].astNode
-            if not _argument_.get_data_state() or not _argument_.get_data_state().was_type('list'):
+            _argument_ = match["_argument_"]
+            if not _argument_.was_type('list'):
                 return explain(message.format(_argument_.id), label=code, title=tldr)
     return False
 
@@ -112,17 +111,17 @@ def histogram_wrong_list():
     return False
 
 
-class histogram_wrong_placement(AtomicFeedbackFunction):
-    """ Histogram plotted in the wrong place. """
+def histogram_wrong_placement():
     message = "The histogram should be plotted only once, after the new list has been created"
-    title = "Histogram Plot Placed Incorrectly"
-
-    def condition(self):
-        matches = find_matches("for ___ in ___:\n"
-                               "    pass\n")
+    code = "histo_wrong_place"
+    tldr = "Histogram Plot Placed Incorrectly"
+    matches = find_matches("for ___ in ___:\n"
+                           "    pass\n")
+    if matches:
         matches02 = find_matches("plt.hist(___)")
         for match in matches:
-            for match02 in matches02:
-                if match02.match_lineno > match.match_lineno:
-                    return False
-        return True
+            if matches02:
+                for match02 in matches02:
+                    if match02.match_lineno > match.match_lineno:
+                        return False
+    return explain(message, code, label=tldr)

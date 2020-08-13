@@ -52,7 +52,7 @@ def wrong_target_is_list():
     match = find_match("for _item_ in ___:\n    pass")
     if match:
         _item_ = match["_item_"].astNode
-        if data_state(_item_).was_type('list'):
+        if _item_.was_type('list'):
             return explain(message.format(_item_.id), label=code, title=tldr)
     return False
 
@@ -70,7 +70,7 @@ def wrong_list_repeated_in_for():
     match = find_match("for _item_ in _item_:\n    pass")
     if match:
         _item_ = match["_item_"].astNode
-        if data_state(_item_).was_type('list'):
+        if _item_.was_type('list'):
             return explain(message.format(_item_.id), label=code, title=tldr)
     return False
 
@@ -95,7 +95,7 @@ def missing_iterator_initialization():
         _list_ = match["_list_"].astNode
         if _list_.id == "___":
             return explain(message1, label=code1, title=tldr1)
-        elif not data_state(_list_).was_type('list'):
+        elif not _list_.was_type('list'):
             return explain(message2.format(_list_.id), label=code2, title=tldr2)
     return False
 
@@ -115,7 +115,7 @@ def wrong_iterator_not_list():
     match = find_match("for ___ in _item_:\n    pass")
     if match:
         _item_ = match["_item_"].astNode
-        if not data_state(_item_).was_type('list'):
+        if not _item_.was_type('list'):
             return explain(message.format(_item_.id), label=code, title=tldr)
     return False
 
@@ -148,7 +148,7 @@ def list_not_initialized_on_run():
     tldr = "List Variable Uninitialized"
     match = find_match("for ___ in _item_:\n    pass")
     if match:
-        _item_ = match["_item_"][0].astNode
+        _item_ = match["_item_"][0]
         if def_use_error(_item_):
             return explain(message, label=code, title=tldr)
     return False
@@ -166,7 +166,8 @@ def list_initialization_misplaced():
     match = find_match("for ___ in _item_:\n    pass")
     if match:
         _item_ = match["_item_"][0].astNode
-        if data_state(_item_).was_type('list') and def_use_error(_item_):
+        # if data_state(_item_).was_type('list') and def_use_error(_item_):
+        if _item_.was_type('list') and def_use_error(_item_):
             return explain(message.format(_item_.id), label=code, title=tldr)
     return False
 
