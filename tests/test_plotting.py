@@ -20,6 +20,9 @@ plt.show()
 plt.plot([4,5,6])
 plt.show()''')[1:]
 
+SUCCESS_MESSAGE = "Complete\nGreat work!"
+SUCCESS_TEXT = "Great work!"
+
 
 class Execution:
     """
@@ -72,7 +75,24 @@ class ExecutionTestCase(unittest.TestCase):
     def test_check_for_plot_correct_hist(self):
         with Execution(code_hist_and_plot) as e:
             self.assertEqual(assert_one_of_plots('hist', [[1, 2, 3]]), False)
-        self.assertFeedback(e, "No Errors\nNo errors reported.")
+        self.assertFeedback(e, SUCCESS_MESSAGE)
+
+    def test_check_for_plot_correct_hist_alt(self):
+        with Execution(code_hist_and_plot) as e:
+            self.assertEqual(assert_one_of_plots('hist', [[4, 5, 6], [1, 2, 3]]), False)
+        self.assertFeedback(e, SUCCESS_MESSAGE)
+
+        with Execution(code_hist_and_plot) as e:
+            self.assertEqual(assert_one_of_plots('hist', [[1, 2, 3], [4, 5, 6]]), False)
+        self.assertFeedback(e, SUCCESS_MESSAGE)
+
+        with Execution(code_hist_and_plot) as e:
+            self.assertEqual(assert_one_of_plots('hist', [[1, 2, 3], [1, 2, 3, 4]]), False)
+        self.assertFeedback(e, SUCCESS_MESSAGE)
+
+        with Execution(code_hist_and_plot) as e:
+            self.assertEqual(assert_one_of_plots('hist', [[1, 2, 3, 4], [1, 2, 3]]), False)
+        self.assertFeedback(e, SUCCESS_MESSAGE)
 
     def test_check_for_plot_wrong_hist(self):
         with Execution(code_hist_and_plot) as e:
@@ -81,19 +101,32 @@ class ExecutionTestCase(unittest.TestCase):
                                "You have created a histogram, but it does not "
                                "have the right data.")
 
-    def test_check_for_plot_correct_plot(self):
+    def test_check_for_plot_wrong_hist_alt(self):
+        with Execution(code_hist_and_plot) as e:
+            assert_one_of_plots('hist', [[1, 2, 3, 4], [4, 5, 6]])
+        self.assertFeedback(e, "Plotting Another Graph\n"
+                               "You have created a histogram, but it does not "
+                               "have the right data. That data appears to have been plotted in another graph.")
+
+        with Execution(code_hist_and_plot) as e:
+            assert_one_of_plots('hist', [[4, 5, 6], [1, 2, 3, 4]])
+        self.assertFeedback(e, "Plotting Another Graph\n"
+                               "You have created a histogram, but it does not "
+                               "have the right data. That data appears to have been plotted in another graph.")
+
+    def test_check_for_plot_correct_plot(self):  # TODO: Write a more complete unit test
         with Execution(code_hist_and_plot) as e:
             self.assertEqual(assert_one_of_plots('line', [[4, 5, 6]]), False)
-        self.assertFeedback(e, "No Errors\nNo errors reported.")
+        self.assertFeedback(e, SUCCESS_MESSAGE)
 
-    def test_check_for_plot_wrong_plot(self):
+    def test_check_for_plot_wrong_plot(self):  # TODO: Write a more complete unit test
         with Execution(code_hist_and_plot) as e:
             assert_one_of_plots('line', [[4, 5, 6, 7]])
         self.assertFeedback(e, "Plot Data Incorrect\n"
                                "You have created a line plot, but it does not "
                                "have the right data.")
 
-    def test_assert_plot_wrong_type_of_plot(self):
+    def test_assert_one_of_plots_wrong_type_of_plot(self):  # TODO: Write a more complete unit test
         student_code = dedent('''
             import matplotlib.pyplot as plt
             plt.plot([1,2,3])
@@ -106,7 +139,7 @@ class ExecutionTestCase(unittest.TestCase):
                                "You have plotted the right data, but you appear "
                                 "to have not plotted it as a histogram.")
 
-    def test_assert_plot_wrong_data_place(self):
+    def test_assert_one_of_plots_wrong_data_place(self):  # TODO: Write a more complete unit test
         student_code = dedent('''
             import matplotlib.pyplot as plt
             plt.plot([1,2,3])
@@ -123,6 +156,7 @@ class ExecutionTestCase(unittest.TestCase):
                                "have the right data. That data appears to have "
                                "been plotted in another graph.")
 
+    def test_assert_one_of_plots_missing_plot_and_data(self):  # TODO: Write a more complete unit test
         student_code = dedent('''
             import matplotlib.pyplot as plt
             plt.plot([1,2,3])
@@ -130,10 +164,11 @@ class ExecutionTestCase(unittest.TestCase):
             plt.show()
         ''')
         with Execution(student_code) as e:
-            self.assertEqual(assert_one_of_plots('hist', [[4, 5, 6]]),
-                             "You have not created a histogram with the "
-                             "proper data.<br><br><i>(no_plt)<i></br></br>")
+            assert_one_of_plots('hist', [[4, 5, 6]])
+        self.assertFeedback(e, "Missing Plot\n"
+                               "You have not created a histogram with the proper data.")
 
+    def test_assert_one_of_plots_empty_scatter(self):  # TODO: Write a more complete unit test
         student_code = dedent('''
             import matplotlib.pyplot as plt
             plt.scatter([], [])
@@ -141,8 +176,10 @@ class ExecutionTestCase(unittest.TestCase):
             plt.show()
         ''')
         with Execution(student_code) as e:
-            self.assertEqual(assert_one_of_plots('scatter', [[]]), False)
+            assert_one_of_plots('scatter', [[]])
+        self.assertFeedback(e, SUCCESS_MESSAGE)
 
+    def test_assert_one_of_plots_simple_scatter(self):  # TODO: Write a more complete unit test
         student_code = dedent('''
             import matplotlib.pyplot as plt
             plt.scatter([1,2,3], [4,5,6])
@@ -150,4 +187,5 @@ class ExecutionTestCase(unittest.TestCase):
             plt.show()
         ''')
         with Execution(student_code) as e:
-            assert_one_of_plots('scatter', [([1, 2, 3], [4, 5, 6])])
+            assert_one_of_plots('scatter', [[[1, 2, 3], [4, 5, 6]]])
+        self.assertFeedback(e, SUCCESS_MESSAGE)

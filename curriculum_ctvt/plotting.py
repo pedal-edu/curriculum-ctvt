@@ -36,6 +36,8 @@ def assert_one_of_plots(plt_type, data_plots, **kwargs):
             data_found_here = False
             for data in data_plots:
                 data_found_here = compare_data(plt_type, data, a_plot)
+                if data_found_here:
+                    break
             if a_plot['type'] == plt_type and data_found_here:
                 return False
             if a_plot['type'] == plt_type:
