@@ -112,4 +112,4 @@ venv.bak/
 .idea/
 
 # Luke
-ctstats/
+ctstats/*_stats.py
