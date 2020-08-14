@@ -709,7 +709,7 @@ class SpecificMistakeTest(MistakeTest):
         self.to_source("rainfall_count = rainfall_count + 1")
         self.assertTrue(wrong_decision_body_9_2(), "false negative")
 
-    def wrong_print_9_2(self):
+    def test_wrong_print_9_2(self):
         """
 
         """
