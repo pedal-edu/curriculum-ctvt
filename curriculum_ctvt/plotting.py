@@ -45,7 +45,7 @@ def assert_one_of_plots(plt_type, data_plots, **kwargs):
             if data_found_here:
                 data_found = data_found_here
     # Figure out what kind of mistake was made.
-    data = data_plots[0]
+    data = data_plots[-1]
     plt_type = GRAPH_TYPES.get(plt_type, plt_type)
     if type_found and data_found:
         return other_plt(plt_type, data, data_found)
