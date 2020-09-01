@@ -2,7 +2,7 @@ from pedal.cait.cait_api import (parse_program,
                                  find_matches, find_match,
                                  find_expr_sub_matches)
 from pedal.sandbox.commands import get_output
-from pedal.extensions.plotting import  get_plots
+from pedal.extensions.plotting import get_plots
 from pedal.core.commands import gently, explain
 
 
@@ -1356,7 +1356,7 @@ def wrong_duplicate_var_in_add():
 
 
 # ########################PLOTTING###############################
-def plot_group_error(output=None, plots=None):
+def plot_group_error(plots=None):
     """
 
     Args:
@@ -1366,18 +1366,18 @@ def plot_group_error(output=None, plots=None):
     Returns:
 
     """
-    if output is None:
-        output = get_output()
     if plots is None:
         plots = get_plots()
-    if len(plots) > 1:
-        explain('You should only be plotting one thing!', label="print_one", title="Multiple Calls to plot")
-        return True
-    elif len(plots) == 0:
-        explain('The algorithm is plotting an empty list. Check your logic.', label='blank_plot', title="Blank Plot")
-        return True
-    elif output:
+    if not plots:
+        explain('You are not plotting anything. Check your logic.', label='no_plot', title="Missing Plot")
+    elif find_match("print()"):
         explain('You should be plotting, not printing!', label='printing', title="Printing instead of Plotting")
+        return True
+    elif len(plots) > 1:
+        explain('You should only be plotting one thing!', label="print_one", title="Multiple Calls to Show")
+        return True
+    elif len(plots[0]['data']) == 0:
+        explain('The algorithm is plotting an empty list. Check your logic.', label='blank_plot', title="Blank Plot")
         return True
     elif len(plots[0]['data']) != 1:
         explain('You should only be plotting one thing!', label='one_plot', title="Too Many Plots")

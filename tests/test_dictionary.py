@@ -605,8 +605,6 @@ class DictionaryMistakeTest(MistakeTest):
         ret = str_list(keys)
         self.assertFalse(ret, "Expected False, got {} instead".format(ret))
 
-
-
     def test_list_var_dict_acc(self):
         # TODO: Check output values
         self.to_source('import weather\n'
@@ -629,6 +627,29 @@ class DictionaryMistakeTest(MistakeTest):
                        "    total_precip = total_precip['Data']['Precipitation'] + report")
         ret = list_var_dict_acc()
         self.assertTrue(ret, "Didn't give message, returned {} instead".format(ret))
+
+        self.to_source('crime_reports = [{"State":"Virginia", "Property Crime":2162.1, "Violent Crime":190.1},\n'
+                       '                 {"State":"Texas", "Property Crime":3361.8, "Violent Crime":408.6},\n'
+                       '                 {"State":"California", "Property Crime":2758.7, "Violent Crime":423.1},\n'
+                       '                 {"State":"New York", "Property Crime":1922.0, "Violent Crime":406.8},\n'
+                       '                 {"State":"Iowa", "Property Crime":2271.8, "Violent Crime":263.9},\n'
+                       '                 {"State":"Colorado", "Property Crime":2684.7, "Violent Crime":308.9}]\n'
+                       'total_prop=0\n'
+                       'count_prop=0\n'
+                       'total_viol=0\n'
+                       'count_viol=0\n'
+                       'for prop_report in crime_reports:\n'
+                       '    total_prop= total_prop + prop_report["Property Crime"]\n'
+                       '    count_prop= count_prop +1\n'
+                       'average_property = total_prop/count_prop\n'
+                       'for violent_report in crime_reports:\n'
+                       '    total_viol= total_viol + violent_report["Violent Crime"]\n'
+                       '    count_viol= count_viol +1\n'
+                       'average_violent= total_viol/count_viol\n'
+                       'print(average_property)\n'
+                       'print(average_violent)\n')
+        ret = list_var_dict_acc()
+        self.assertFalse(ret, "Expected False, got {} instead".format(ret))
 
     def test_key_comp(self):
         # TODO: Check output values

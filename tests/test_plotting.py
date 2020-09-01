@@ -11,6 +11,9 @@ from pedal.resolvers import simple
 from pedal.sandbox import commands
 from pedal.cait.cait_api import parse_program
 from curriculum_ctvt.plotting import assert_one_of_plots
+from curriculum_ctvt.iteration_context import plot_group_error
+import tate
+import matplotlib.pyplot as plt
 
 code_hist_and_plot = ('''
 import matplotlib.pyplot as plt
@@ -137,7 +140,7 @@ class ExecutionTestCase(unittest.TestCase):
             assert_one_of_plots('hist', [[1, 2, 3]])
         self.assertFeedback(e, "Wrong Plot Type\n"
                                "You have plotted the right data, but you appear "
-                                "to have not plotted it as a histogram.")
+                               "to have not plotted it as a histogram.")
 
     def test_assert_one_of_plots_wrong_data_place(self):  # TODO: Write a more complete unit test
         student_code = dedent('''

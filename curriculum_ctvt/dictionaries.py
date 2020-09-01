@@ -713,7 +713,8 @@ def list_var_dict_acc():
                            "    pass")
     for match in matches:
         __exp__ = match['__exp__']
-        if __exp__.find_matches("_var_[__str__]"):
+        submatch = __exp__.find_matches("_var_[__str__]")
+        if submatch:
             return explain(message, label=code, title=tldr)
     return False
 
