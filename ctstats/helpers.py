@@ -13,6 +13,7 @@ import itertools as it
 from scipy import stats
 import math
 import traceback
+from tqdm import tqdm
 
 
 def setup(student_code, input_vals):
@@ -24,19 +25,20 @@ def setup(student_code, input_vals):
     Returns:
         None
     """
-    MAIN_REPORT.clear()
-    set_source(student_code)
+    contextualize_report(student_code)
     tifa_analysis()
     if len(input_vals) != 0:
         queue_input(*input_vals)
-    run()
+    # run(threaded=True)
     return get_sandbox()
 
 
-def process(file, module, ins_code, report, input_vals=None, codestate=-1):
-    student_code1 = file.read()
+def process(student_code1, module, ins_code, report, input_vals=None, codestate=-1):
+    # student_code1 = file.read()
     student_run = setup(student_code1, input_vals)  # setup returns a sandbox object
-    student_run.run()
+    student_run.allowed_time = 10
+    student_run.run(threaded=True)
+    # student_run.run()
     module.loader.exec_module(ins_code)
     feedback = report.feedback
     feedback_set = []
@@ -65,9 +67,9 @@ def assignment_process(df, assignment, progs2_dir, ins_dir, main_file):
     pass_count = 0
     t0 = time.time()
     label_set = {}
-    for index, row in df.iterrows():
+    for index, row in tqdm(df.iterrows(), total=len(df)):
         row_asid = int(row["AssignmentID"])
-        if  row_asid == asid or row_asid == -1:
+        if row_asid == asid or row_asid == -1:
             total_iterations += 1
             codestate_id = int(row['CodeStateID'])
             main_file_revamp = main_file
@@ -76,34 +78,41 @@ def assignment_process(df, assignment, progs2_dir, ins_dir, main_file):
             code_f = progs2_dir + "CodeStates/" + str(codestate_id) + "/" + main_file_revamp
             try:
                 with open(code_f) as code:
-                    feedback_result = process(code, my_spec, module, MAIN_REPORT, input_vals=test_in, codestate=codestate_id)
-                    feedback_result["row"] = index
-                    student_feedback.append(feedback_result)
-                    score = 0.0
-                    mistake_index = len(feedback_result['feedback'])
-                    # TODO: Get rid of these items in pedal v3
-                    if "module_not_found" in feedback_result['feedback']:
-                        feedback_result['feedback'].remove("module_not_found")
-                    if "unused_returned_value" in feedback_result['feedback']:
-                        feedback_result['feedback'].remove("unused_returned_value")
-                    if len(feedback_result['feedback']) == 1 and feedback_result['feedback'][0].label == "set_success":
-                        score = 1.0
-                        mistake_index -= 1.0
-                        pass_count += 1
-                    df.at[index, 'Score'] = score
-                    df.at[index, 'mistake index'] = mistake_index
-                    for feedback in feedback_result['feedback']:
-                        if feedback.label in label_set.keys():
-                            label_set[feedback.label] += 1
-                        else:
-                            label_set[feedback.label] = 1
+                    code_extracted = code.read(20000)
+                feedback_result = process(code_extracted, my_spec, module, MAIN_REPORT, input_vals=test_in,
+                                          codestate=codestate_id)
+                feedback_result["row"] = index
+                student_feedback.append(feedback_result)
+                score = 0.0
+                mistake_index = len(feedback_result['feedback'])
+                # TODO: Get rid of these items in pedal v3
+                # if "module_not_found" in feedback_result['feedback']:
+                #    feedback_result['feedback'].remove("module_not_found")
+                # if "unused_returned_value" in feedback_result['feedback']:
+                #    feedback_result['feedback'].remove("unused_returned_value")
+                if len(feedback_result['feedback']) == 1 and feedback_result['feedback'][0].label == "set_success":
+                    score = 1.0
+                    mistake_index -= 1.0
+                    pass_count += 1
+                df.at[index, 'Score'] = score
+                df.at[index, 'mistake index'] = mistake_index
+                for feedback in feedback_result['feedback']:
+                    if feedback.label in label_set.keys():
+                        label_set[feedback.label] += 1
+                    else:
+                        label_set[feedback.label] = 1
             except Exception as inst:
-                print(type(inst))
-                print(inst.args)
-                track = traceback.format_exc()
-                print(track)
-        # if total_iterations >= 10:  # TODO: Remove this
-        #    break
+                # print(type(inst))
+                # print(inst.args)
+                # track = traceback.format_exc()
+                # print(track)
+                traceback.print_tb(inst.__traceback__)
+
+            # if total_iterations >= 10:  # TODO: Remove this
+            #     break
+            # if total_iterations % 20 == 0:  # TODO: Remove this
+            #    print(total_iterations)
+
     t1 = time.time()
     time_elapsed = t1 - t0
     print("asid: {}, time: {}".format(asid, time_elapsed))
