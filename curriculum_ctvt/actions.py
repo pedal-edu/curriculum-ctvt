@@ -8,7 +8,7 @@ def missing_conversion_group():
     missing_conversion_4()
 
 
-def wrong_convnersion_group_int():
+def wrong_conversion_group_int():
     wrong_conversion_int_1()
     wrong_conversion_int_2()
 
@@ -17,12 +17,6 @@ def wrong_conversion_group_float():
     wrong_conversion_float_1()
     wrong_conversion_float_2()
 
-
-def input_output():
-    missing_input()
-    missing_inputs()
-    missing_output()
-    missing_outputs()
 
 def missing_conversion_1():
     MESSAGE = 'The input is always a string and must be converted to a number before being used in an arithmetic calculation.'
@@ -37,13 +31,21 @@ __expr__""")
         prev_found_matchset = find0
     within0 = []
     for match in prev_matchset:
-        __expr__ = match['__expr__']
-        within0.extend(__expr__.find_matches(""" = _var_ *""", use_previous = match))
+        __expr__ = match["__expr__"]
+        within0.extend(__expr__.find_matches("""_var_ * ___""", use_previous = match))
     prev_matchset = within0
     if within0:
         prev_found_matchset = within0
+    where0 = []
+    for match in prev_matchset:
+        _var_ = match['_var_']
+        if not _var_.was_type(float):
+            where0.append(match)
+    prev_matchset = where0
+    if where0:
+        prev_found_matchset = where0
     if prev_matchset:
-        return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
+        return explain(message=MESSAGE, label=LABEL, title=TITLE)
     return False
 
 
@@ -61,10 +63,18 @@ __expr__""")
     within0 = []
     for match in prev_matchset:
         __expr__ = match['__expr__']
-        within0.extend(__expr__.find_matches(""" = _var_  +""", use_previous = match))
+        within0.extend(__expr__.find_matches("""_var_  +  ___""", use_previous = match))
     prev_matchset = within0
     if within0:
         prev_found_matchset = within0
+    where0 = []
+    for match in prev_matchset:
+        _var_ = match['_var_']
+        if not _var_.was_type(float):
+            where0.append(match)
+    prev_matchset = where0
+    if where0:
+        prev_found_matchset = where0
     if prev_matchset:
         return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
     return False
@@ -84,10 +94,18 @@ __expr__""")
     within0 = []
     for match in prev_matchset:
         __expr__ = match['__expr__']
-        within0.extend(__expr__.find_matches(""" = _var_  -""", use_previous = match))
+        within0.extend(__expr__.find_matches("""_var_  - ___""", use_previous = match))
     prev_matchset = within0
     if within0:
         prev_found_matchset = within0
+    where0 = []
+    for match in prev_matchset:
+        _var_ = match['_var_']
+        if not _var_.was_type(float):
+            where0.append(match)
+    prev_matchset = where0
+    if where0:
+        prev_found_matchset = where0
     if prev_matchset:
         return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
     return False
@@ -107,10 +125,18 @@ __expr__""")
     within0 = []
     for match in prev_matchset:
         __expr__ = match['__expr__']
-        within0.extend(__expr__.find_matches(""" = _var_  /""", use_previous = match))
+        within0.extend(__expr__.find_matches("""_var_  / ___""", use_previous = match))
     prev_matchset = within0
     if within0:
         prev_found_matchset = within0
+    where0 = []
+    for match in prev_matchset:
+        _var_ = match['_var_']
+        if not _var_.was_type(float):
+            where0.append(match)
+    prev_matchset = where0
+    if where0:
+        prev_found_matchset = where0
     if prev_matchset:
         return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
     return False
@@ -121,7 +147,9 @@ def wrong_conversion_int_1():
     LABEL = 'wr_conv_int_1'
     TITLE = 'Wrong Conversion'
     find0 = find_matches("""
+
 _var_ = input()
+
 __expr1__ """)
     prev_matchset = find0
     prev_found_matchset = []
@@ -143,7 +171,7 @@ def wrong_conversion_int_2():
     MESSAGE = 'The input is a number with a decimal point. The conversion should reflect this type of number.'
     LABEL = 'wr_conv_int_2'
     TITLE = 'Wrong Conversion'
-    find0 = find_matches(""" = int(input()) """)
+    find0 = find_matches("""int(input()) """)
     prev_matchset = find0
     prev_found_matchset = []
     if find0:
@@ -180,7 +208,7 @@ def wrong_conversion_float_2():
     MESSAGE = 'The input is a whole number. The conversion should reflect this type of number.'
     LABEL = 'wr_conv_float_2'
     TITLE = 'Wrong Conversion'
-    find0 = find_matches(""" = float(input()) """)
+    find0 = find_matches("""___ = float(input()) """)
     prev_matchset = find0
     prev_found_matchset = []
     if find0:

@@ -1,50 +1,12 @@
 from pedal.environments.quick import *
 
 
-def wrong_input_61():
-    MESSAGE = 'The blocks forming the input do not seem to be correct'
-    LABEL = 'wr_in_61'
-    TITLE = 'Check Input Blocks'
-    find0 = find_matches("""___ = float(input('___'))""")
-    prev_matchset = find0
-    prev_found_matchset = []
-    if find0:
-        prev_found_matchset = find0
-    if prev_matchset:
-        return False
-    find1 = []
-    for match in prev_matchset:
-        find1.extend(find_matches("""___ = input('___')""", use_previous = match))
-    prev_matchset = find1
-    if find1:
-        prev_found_matchset = find1
-    if not prev_matchset:
-        return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
-    return False
-
-
-def wrong_conversion_61():
-    MESSAGE = 'The conversion operator is not in the right place.'
-    LABEL = 'wr_conv_61'
-    TITLE = 'Misplaced Conversion'
-    find0 = find_matches(""" ___ = input(float(___)) """)
-    prev_matchset = find0
-    prev_found_matchset = []
-    if find0:
-        prev_found_matchset = find0
-    if prev_matchset:
-        return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
-    return False
-
-
 def wrong_calculation_61():
     MESSAGE = 'The calculation of miles from kilometers does not seem correct.'
     LABEL = 'wr_cacl_61'
     TITLE = 'Wrong Calculation'
     find0 = find_matches("""
-
 _var1_ = __inexpr__
-
 ___ = __expr__ * 0.67 """)
     prev_matchset = find0
     prev_found_matchset = []
@@ -53,7 +15,7 @@ ___ = __expr__ * 0.67 """)
     within0 = []
     for match in prev_matchset:
         __inexpr__ = match['__inexpr__']
-        within0.extend(__inexpr__.find_matches("""input""", use_previous = match))
+        within0.extend(__inexpr__.find_matches("""input()""", use_previous = match))
     prev_matchset = within0
     if within0:
         prev_found_matchset = within0
@@ -74,12 +36,9 @@ def wrong_output_61():
     LABEL = 'wr_output_61'
     TITLE = 'Wrong Output'
     find0 = find_matches("""
-
 _var1_ = __inexpr__
-
 _var2_= __expr__ * 0.67
-
-print(__expr2__) """)
+print(__expr2__)""")
     prev_matchset = find0
     prev_found_matchset = []
     if find0:
@@ -111,32 +70,31 @@ print(__expr2__) """)
 
 
 def wrong_calc_62():
-    MESSAGE = 'The calculation does not appear to be correct.'
-    LABEL = 'wr_calc_62'
-    TITLE = 'Wrong Calculation'
-    find0 = find_matches("""___ * 1.15""")
-    prev_matchset = find0
-    prev_found_matchset = []
-    if find0:
-        prev_found_matchset = find0
-    if prev_matchset:
-        return False
-    find1 = []
-    for match in prev_matchset:
-        find1.extend(find_matches("""___ * 0.15""", use_previous = match))
-    prev_matchset = find1
-    if find1:
-        prev_found_matchset = find1
-    if not prev_matchset:
-        return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
-    return False
+    """
+    BEGIN wrong_calc_62()
+    MESSAGE
+    LABEL
+    TITLE
+    FIND `___ * 1.15`
+    IF FOUND GIVE NO FEEDBACK
+    FIND `___ * 0.15`
+    IF NOT FOUND GIVE FEEDBACK
+    END
+
+    """
+    message = 'The calculation does not appear to be correct.'
+    label = 'wr_calc_62'
+    title = 'Wrong Calculation'
+
+    if not find_match("___ * 1.15") and not find_match("___ * 0.15"):
+        explain(message, label=label, title=title)
 
 
 def wrong_calc_cw_6_3_5():
     MESSAGE = 'The calculation of the exchange amount does not appear to be correct.'
     LABEL = 'wr_calc_cw_6_3_5'
     TITLE = 'Wrong Calculation'
-    find0 = find_matches(""" =  ____ /  ____""")
+    find0 = find_matches("""___ /  ___""")
     prev_matchset = find0
     prev_found_matchset = []
     if find0:
@@ -164,6 +122,7 @@ def missing_constant_155():
     MESSAGE = 'Need to use the installation cost per square yard (1.55) in the cost calculations.'
     LABEL = 'miss_1.55'
     TITLE = 'Missing Cost Factor'
+    '''
     find0 = find_matches("""1.55""")
     prev_matchset = find0
     prev_found_matchset = []
@@ -172,18 +131,20 @@ def missing_constant_155():
     if not prev_matchset:
         return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
     return False
+    '''
+    if not find_match("1.55"):
+        return explain(message=MESSAGE, label=LABEL, title=TITLE)
 
 
 def missing_area_calc():
     MESSAGE = 'Check that you have calculated correctly the area of the carpet.'
     LABEL = 'miss_area'
     TITLE = 'Missing Area Calculation'
+
+    '''
     find0 = find_matches("""
-
 _var1_ = __expr1__
-
 _var2_ = __expr2__
-
 ___ = __expr3__ * _expr4_""")
     prev_matchset = find0
     prev_found_matchset = []
@@ -218,8 +179,20 @@ ___ = __expr3__ * _expr4_""")
     if within3:
         prev_found_matchset = within3
     if not prev_matchset:
-        return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
+        return explain(message=MESSAGE, label=LABEL, title=TITLE)
     return False
+    '''
+
+    find0 = find_matches("_var1_ = __expr1__\n"
+                         "_var2_ = __expr2__\n"
+                         "___ = __expr3__ * _expr4_\n")
+    for match in find0:
+        match0 = find_match("input()")
+        match1 = find_match("input()")
+        match2 = find_match("_var1_")
+        match3 = find_match("_var2_")
+        if not (match0 and match1 and match2 and match3):
+            return explain(message=MESSAGE, label=LABEL, title=TITLE)
 
 
 def missing_average_calc():
@@ -227,13 +200,12 @@ def missing_average_calc():
     LABEL = 'miss_div_2'
     TITLE = 'Missing part of calculation'
     find0 = find_matches("""
-
 ___ = ___ / 2 """)
     prev_matchset = find0
     prev_found_matchset = []
     if find0:
         prev_found_matchset = find0
-    if not prev_matchset:
+    if prev_matchset:
         return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
     return False
 
@@ -248,7 +220,7 @@ def missing_constant_12():
     if find0:
         prev_found_matchset = find0
     if not prev_matchset:
-        return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
+        return explain(message=MESSAGE, label=LABEL, title=TITLE)
     return False
 
 
@@ -262,6 +234,6 @@ def missing_constant_034():
     if find0:
         prev_found_matchset = find0
     if not prev_matchset:
-        return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
+        return explain(message=MESSAGE, label=LABEL, title=TITLE)
     return False
 
