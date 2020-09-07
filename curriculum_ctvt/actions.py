@@ -147,9 +147,7 @@ def wrong_conversion_int_1():
     LABEL = 'wr_conv_int_1'
     TITLE = 'Wrong Conversion'
     find0 = find_matches("""
-
 _var_ = input()
-
 __expr1__ """)
     prev_matchset = find0
     prev_found_matchset = []

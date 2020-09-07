@@ -118,22 +118,19 @@ def missing_constant_981():
     return False
 
 
-def missing_constant_155():
-    MESSAGE = 'Need to use the installation cost per square yard (1.55) in the cost calculations.'
-    LABEL = 'miss_1.55'
+def missing_constant_150():
+    MESSAGE = 'Need to use the installation cost per square yard (1.50) in the cost calculations.'
+    LABEL = 'miss_1.50'
     TITLE = 'Missing Cost Factor'
-    '''
-    find0 = find_matches("""1.55""")
+
+    find0 = find_matches("""1.50""")
     prev_matchset = find0
     prev_found_matchset = []
     if find0:
         prev_found_matchset = find0
     if not prev_matchset:
-        return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
-    return False
-    '''
-    if not find_match("1.55"):
         return explain(message=MESSAGE, label=LABEL, title=TITLE)
+    return False
 
 
 def missing_area_calc():
