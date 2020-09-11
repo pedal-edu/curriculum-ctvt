@@ -76,7 +76,7 @@ __expr__""")
     if where0:
         prev_found_matchset = where0
     if prev_matchset:
-        return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
+        return explain(message=MESSAGE, label=LABEL, title=TITLE)
     return False
 
 
@@ -107,7 +107,7 @@ __expr__""")
     if where0:
         prev_found_matchset = where0
     if prev_matchset:
-        return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
+        return explain(message=MESSAGE, label=LABEL, title=TITLE)
     return False
 
 
@@ -138,7 +138,7 @@ __expr__""")
     if where0:
         prev_found_matchset = where0
     if prev_matchset:
-        return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
+        return explain(message=MESSAGE, label=LABEL, title=TITLE)
     return False
 
 
@@ -161,7 +161,7 @@ __expr1__ """)
     if within0:
         prev_found_matchset = within0
     if prev_matchset:
-        return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
+        return explain(message=MESSAGE, label=LABEL, title=TITLE)
     return False
 
 
@@ -175,7 +175,7 @@ def wrong_conversion_int_2():
     if find0:
         prev_found_matchset = find0
     if prev_matchset:
-        return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
+        return explain(message=MESSAGE, label=LABEL, title=TITLE)
     return False
 
 
@@ -198,7 +198,7 @@ __expr1__ """)
     if within0:
         prev_found_matchset = within0
     if prev_matchset:
-        return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
+        return explain(message=MESSAGE, label=LABEL, title=TITLE)
     return False
 
 
@@ -212,7 +212,7 @@ def wrong_conversion_float_2():
     if find0:
         prev_found_matchset = find0
     if prev_matchset:
-        return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
+        return explain(message=MESSAGE, label=LABEL, title=TITLE)
     return False
 
 
@@ -226,7 +226,7 @@ def missing_input():
     if find0:
         prev_found_matchset = find0
     if not prev_matchset:
-        return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
+        return explain(message=MESSAGE, label=LABEL, title=TITLE)
     return False
 
 
@@ -256,7 +256,7 @@ ___ = __expr2__ """)
     if within1:
         prev_found_matchset = within1
     if not prev_matchset:
-        return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
+        return explain(message=MESSAGE, label=LABEL, title=TITLE)
     return False
 
 
@@ -286,6 +286,6 @@ print() """)
     if find0:
         prev_found_matchset = find0
     if not prev_matchset:
-        return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
+        return explain(message=MESSAGE, label=LABEL, title=TITLE)
     return False
 
