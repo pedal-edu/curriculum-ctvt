@@ -270,7 +270,7 @@ def missing_output():
     if find0:
         prev_found_matchset = find0
     if not prev_matchset:
-        return explain(message=MESSAGE.format(**prev_found_matchset[0].names()), label=LABEL, title=TITLE)
+        return explain(message=MESSAGE, label=LABEL, title=TITLE)
     return False
 
 
