@@ -73,7 +73,7 @@ def list_all_zeros_8_2():
     for match in matches:
         __list__ = match['__list__']
         list_node = __list__.parent
-        all_num = list_node.find_all("Constant")
+        all_num = list_node.find_all("Num")
         all_zeros = True
         for num in all_num:
             if num.value != 0:
