@@ -1368,8 +1368,9 @@ def plot_group_error(plots=None):
     """
     if plots is None:
         plots = get_plots()
-    if not plots:
+    if not plots or len(plots) == 0:
         explain('You are not plotting anything. Check your logic.', label='no_plot', title="Missing Plot")
+        return True
     elif find_match("print()"):
         explain('You should be plotting, not printing!', label='printing', title="Printing instead of Plotting")
         return True
