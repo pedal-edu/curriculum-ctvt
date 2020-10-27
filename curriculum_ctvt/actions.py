@@ -1,4 +1,4 @@
-from pedal.environments.quick import *
+from pedal.environments.standard import *
 
 
 def missing_conversion_group():
