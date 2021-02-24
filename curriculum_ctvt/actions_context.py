@@ -1,4 +1,4 @@
-from pedal.environments.quick import *
+from pedal import *
 
 
 def wrong_calculation_61():
