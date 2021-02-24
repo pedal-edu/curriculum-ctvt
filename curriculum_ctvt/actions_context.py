@@ -1,4 +1,5 @@
-from pedal import *
+from pedal.cait.cait_api import *
+from pedal.core.commands import *
 
 
 def wrong_calculation_61():
