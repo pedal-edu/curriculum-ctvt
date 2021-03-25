@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='curriculum_ctvt',
-    version='1.0.0',
+    version='1.0.1',
     python_requires='>=3.6',
     author='lukesg',
     author_email='lukesg08@vt.edu',
