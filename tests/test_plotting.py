@@ -102,7 +102,9 @@ class ExecutionTestCase(unittest.TestCase):
             assert_one_of_plots('hist', [[1, 2, 3, 4]])
         self.assertFeedback(e, "Plot Data Incorrect\n"
                                "You have created a histogram, but it does not "
-                               "have the right data.")
+                               "have the right data.\n"
+                               "I expected the data to be:\n"
+                               "    [1, 2, 3, 4]")
 
     def test_check_for_plot_wrong_hist_alt(self):
         with Execution(code_hist_and_plot) as e:
@@ -127,7 +129,9 @@ class ExecutionTestCase(unittest.TestCase):
             assert_one_of_plots('line', [[4, 5, 6, 7]])
         self.assertFeedback(e, "Plot Data Incorrect\n"
                                "You have created a line plot, but it does not "
-                               "have the right data.")
+                               "have the right data.\n"
+                               "I expected the data to be:\n"
+                               "    [4, 5, 6, 7]")
 
     def test_assert_one_of_plots_wrong_type_of_plot(self):  # TODO: Write a more complete unit test
         student_code = dedent('''

@@ -2,7 +2,7 @@ from pedal.cait.cait_api import (parse_program, find_match, find_matches,
                                  find_expr_sub_matches, data_state,
                                  def_use_error)
 from pedal.core.commands import gently, explain
-from pedal.types.definitions import *
+from pedal.types.new_types import is_subtype, NumType, StrType
 """
 2. 
 
@@ -52,12 +52,14 @@ def parameter_types():
         _list2_ = match["_list2_"]
         _list3_ = match["_list3_"]
         if _list1_.was_type('list'):
-            if not type(data_state(_list1_).type.subtype) == NumType:
+            print(data_state(_list1_).type.element_type,
+                  is_subtype(data_state(_list1_).type.element_type, NumType()))
+            if not is_subtype(data_state(_list1_).type.element_type, NumType()):
                 return explain(message.format(1, "number"), label=code, title=tldr)
         if _list2_.was_type('list'):
-            if not type(data_state(_list2_).type.subtype) == NumType:
+            if not is_subtype(data_state(_list2_).type.element_type, NumType()):
                 return explain(message.format(2, "number"), label=code, title=tldr)
         if _list3_.was_type('list'):
-            if not type(data_state(_list3_).type.subtype) == StrType:
+            if not is_subtype(data_state(_list3_).type.element_type, StrType()):
                 return explain(message.format(3, "string"), label=code, title=tldr)
     return False

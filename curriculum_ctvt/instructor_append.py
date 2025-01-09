@@ -1,5 +1,6 @@
-from pedal.cait.cait_api import find_matches, find_expr_sub_matches, data_state
+from pedal.cait.cait_api import find_matches, find_expr_sub_matches, data_state, def_use_error
 from pedal.core.commands import gently, explain
+from pedal.types.new_types import AnyType
 
 
 def append_group_on_change():
